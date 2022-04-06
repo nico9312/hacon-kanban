@@ -5,10 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_connect/connect.dart';
 
 class NocoDBConnector extends GetConnect {
-  static final kBaseUrl = DotEnv().get('NOCODB_BASE_URL');
+  static final kBaseUrl = dotenv.get('NOCODB_BASE_URL');
   static final Map<String, String> headers = {
     'accept': 'accept: application/json',
-    'xc-auth': DotEnv().get('NOCODB_TOKEN'),
+    'xc-auth': dotenv.get('NOCODB_TOKEN'),
   };
 
   Future<List<ItemDTO>> getAllItems() async {

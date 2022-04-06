@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
-  await DotEnv().load(fileName: '.env');
+  await dotenv.load(fileName: '.env');
   runApp(GetMaterialApp(
     home: const BoardView(),
     initialBinding: AppBindings(),
