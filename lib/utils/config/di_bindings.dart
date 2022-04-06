@@ -8,7 +8,7 @@ class AppBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<BoardController>(() => BoardController());
-    Get.lazyPut<IBoardFacade>(() => BoardFacadeImplFake());
+    Get.lazyPut<IBoardFacade>(() => BoardFacadeImpl());
     Get.lazyPut<NocoDBConnector>(() => NocoDBConnector());
   }
 }

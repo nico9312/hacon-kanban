@@ -28,10 +28,15 @@ class BoardController extends GetxController {
     state.value = kStateLoading;
     state.refresh();
 
-    final newBoard = await _boardFacade.getKanbanBoard();
+    final response = await _boardFacade.getKanbanBoard();
 
-    board.value = newBoard;
-    board.refresh();
+    response.fold(
+      (l) => Get.snackbar('Failure', 'Not able to fetch Data'),
+      (newBoard) {
+        board.value = newBoard;
+        board.refresh();
+      },
+    );
 
     state.value = kStateLoadingCompleted;
     state.refresh();
@@ -41,8 +46,6 @@ class BoardController extends GetxController {
   ///
   ///
   void dragList(KanbanListEO list, KanbanListEO other) {
-    print(list);
-    print(other);
     board.value.dragList(list, other);
     board.refresh();
   }
@@ -50,7 +53,10 @@ class BoardController extends GetxController {
   ///
   ///
   ///
-  void moveItem(KanbanListEO list, ItemEO item, PositionVO targetPosition) {
+  Future<void> moveItem(
+      KanbanListEO list, ItemEO item, PositionVO targetPosition) async {
+    bool saveBecauseOfNewList = list.uniqueId != item.uniqueId;
+
     item.removeFromList();
 
     if (list.items.length >
@@ -60,6 +66,17 @@ class BoardController extends GetxController {
       list.addItem(item);
     }
 
-    board.refresh();
+    if (saveBecauseOfNewList) {
+      final response = await _boardFacade.updateItem(item);
+
+      final itemtitle = item.title.getOrCrash();
+
+      response.fold(
+        (l) =>
+            Get.snackbar('Failure', 'Was not able to update Item $itemtitle'),
+        (r) => Get.snackbar('Success', 'Successfully updated Item $itemtitle'),
+      );
+      board.refresh();
+    }
   }
 }

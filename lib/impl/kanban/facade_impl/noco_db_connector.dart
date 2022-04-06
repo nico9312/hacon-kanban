@@ -12,15 +12,12 @@ class NocoDBConnector extends GetConnect {
   };
 
   Future<List<ItemDTO>> getAllItems() async {
-    final requestUrl = '$kBaseUrl?where=~not(Status%2Clike%2CArchived)';
-
-    print('headers $headers');
-    print('url $kBaseUrl');
+    final requestUrl = '$kBaseUrl?where=~not(Status%2Clike%2C%Archived%)';
 
     final response = await get(requestUrl, headers: headers);
 
     if (response.bodyString == null || !response.isOk) {
-      return [];
+      throw Exception();
     }
     final List<ItemDTO> returnList = [];
     final decoded = jsonDecode(response.bodyString!);
@@ -37,5 +34,20 @@ class NocoDBConnector extends GetConnect {
     }
 
     return returnList;
+  }
+
+  ///
+  ///
+  ///
+  Future<void> updateItem(ItemDTO item) async {
+    final id = item.uniqueId;
+    final requestUrl = '$kBaseUrl/$id';
+
+    final response =
+        await put(requestUrl, jsonEncode(item.toJson()), headers: headers);
+
+    if (response.bodyString == null || !response.isOk) {
+      throw Exception();
+    }
   }
 }

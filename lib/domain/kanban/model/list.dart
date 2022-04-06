@@ -31,6 +31,7 @@ class KanbanListEO {
     items.insert(position.getOrElse(items.length), item);
 
     item.list = this;
+    item.status = StatusVO(title.getOrCrash());
   }
 
   @override

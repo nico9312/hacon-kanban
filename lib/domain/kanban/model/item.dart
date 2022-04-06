@@ -6,7 +6,7 @@ class ItemEO {
   final DescriptionVO description;
   final UniqueIdVO uniqueId;
   KanbanListEO? list;
-  final StatusVO status;
+  StatusVO? status;
 
   ItemEO(this.title, this.description, this.uniqueId, this.status);
 

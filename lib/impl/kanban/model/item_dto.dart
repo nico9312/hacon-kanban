@@ -27,6 +27,18 @@ class ItemDTO {
   ///
   ///
   ///
+  Map<String, dynamic> toJson() {
+    return {
+      'id': int.parse(uniqueId),
+      'title': title,
+      'description': description,
+      'Status': status
+    };
+  }
+
+  ///
+  ///
+  ///
   ItemEO toDomain() {
     return ItemEO(
       HeadlineVO(title),
@@ -35,4 +47,14 @@ class ItemDTO {
       StatusVO(status),
     );
   }
+
+  ///
+  ///
+  ///
+  factory ItemDTO.fromDomain(ItemEO item) => ItemDTO(
+        uniqueId: item.uniqueId.getOrCrash(),
+        title: item.title.getOrCrash(),
+        description: item.description.getOrElse(''),
+        status: item.status!.getOrElse(''),
+      );
 }

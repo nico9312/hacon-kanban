@@ -40,7 +40,7 @@ class KanbanBoardEO {
   ///
   void addItems(List<ItemEO> items) {
     for (var item in items) {
-      final listTitle = item.status.getOrElse('none');
+      final listTitle = item.status!.getOrElse('none');
       if (lists.any((list) => list.title.getOrCrash() == listTitle)) {
         lists
             .firstWhere((list) => list.title.getOrCrash() == listTitle)
@@ -51,6 +51,10 @@ class KanbanBoardEO {
         addList(newList);
       }
     }
+
+    lists.sort(
+      (a, b) => a.title.getOrCrash().compareTo(b.title.getOrCrash()),
+    );
   }
 
   @override
